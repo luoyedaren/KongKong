@@ -1,5 +1,6 @@
 package kong.play.mock;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import lombok.NoArgsConstructor;
 import org.hamcrest.Matcher;
@@ -9,8 +10,10 @@ import org.hamcrest.beans.HasPropertyWithValue;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -28,11 +31,11 @@ public class TestSimpleMock {
 	public void name() {
 		List mockList = mock(List.class);
 		mockList.add("one");
-		mockList.removeAll();
+		mockList.clear();
 
 //		验证被调用过
 		verify(mockList).add("one");
-		verify(mockList).removeAll();
+		verify(mockList).clear();
 		verify(mockList,atLeast(2)).add("one");
 		verify(mockList,times(3)).add("one");
 //		verify(mockList).add("two",1);
@@ -43,6 +46,30 @@ public class TestSimpleMock {
 		OperatorOne mockOperator = mock(OperatorOne.class);
 		when(mockOperator.getOne()).thenReturn("one");
 		System.out.println(mockOperator.getOne());
+
+
+	}
+
+	//抓取参数
+
+
+	@Test
+	public void captureParam() {
+		ArrayList<String> list = Lists.newArrayList("1", "2");
+		List mockList = mock(java.util.List.class);
+		ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+		mockList.addAll(list);
+		verify(mockList).addAll(listArgumentCaptor.capture());
+
+		assertThat(mockList.size(), is(0));
+		System.out.println(listArgumentCaptor.getAllValues());
+		assertThat(1, is(1));
+		assertThat(list, is(listArgumentCaptor.getValue()));
+	}
+
+	@Test
+	public void one() {
+//		this is a 覆盖操作 heheheh;
 
 
 	}

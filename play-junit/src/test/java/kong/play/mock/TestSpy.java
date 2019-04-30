@@ -41,6 +41,8 @@ public class TestSpy {
 		assertThat(spy, hasItems("one"));
 //		assertThat(spy, IsIterableContainingInOrder.contains("two","one"));
 		assertThat(spy, IsIterableContainingInOrder.contains("one","two"));
+
+		// 元素是否在集合中
 		assertThat("one", IsIn.isIn(spy));
 	}
 
