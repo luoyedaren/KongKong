@@ -14,6 +14,9 @@ import java.io.Serializable;
 @Data
 public class JsonPretty implements Serializable {
 
+	/**
+	 *
+	 */
 	@JsonProperty("CREDIT_LIMT_SNO")
 	private String creditLimtSno = "111";
 	private String channelCode;

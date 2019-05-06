@@ -3,7 +3,12 @@ package com.play.util.excel;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Strings;
 import org.mockito.internal.matchers.GreaterThan;
+
+import java.util.regex.Pattern;
+
+import static java.util.regex.Pattern.*;
 
 /**
  * project KongKong
@@ -17,23 +22,35 @@ public class ExceltUtils {
 		return null;
 	}
 
-	public static String stringToJavaPropertyWithJsonAnnotation(String demoStr, boolean addAnnotation) {
-		if (StrUtil.isEmpty(demoStr)) {
-			return "";
-		}
-		String[] split = demoStr.split("\\n");
-		StringBuilder sb = new StringBuilder();
-		for (String p : split) {
-			if (addAnnotation) {
-				sb.append("@JsonProperty(\"").append(p).append("\")").append(StrUtil.LF);
-			}
-			sb.append("private String ").append(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, p)).append(";").append(StrUtil.LF);
-		}
-		return sb.toString();
+	public static String stringToJavaPropertyWithJsonAnnotation(String demoStr) {
+		return stringToJavaProperty(demoStr, true);
 	}
 
-	public static String stringToJavaProperty(String str) {
-		return stringToJavaPropertyWithJsonAnnotation(str, false);
+	public static String stringToJavaProperty(String str, boolean addAnnotation) {
+		if (StrUtil.isEmpty(str)) {
+			return "";
+		}
+		String[] split = str.split("\\n");
+		StringBuilder sb = new StringBuilder();
+		for (String p : split) {
+			boolean contains = compile("\\t").matcher(p).find();
+			String property = "";
+			String comment = "";
+			if (contains) {
+				property = p.split("\\t")[0];
+				comment = p.split("\\t")[1];
+				sb.append("/** ").append("\n")
+						.append(" * ").append(comment).append("\n")
+						.append(" */ ").append("\n");
+			} else {
+				property = p;
+			}
+			if (addAnnotation) {
+				sb.append("@JsonProperty(\"").append(property).append("\")").append(StrUtil.LF);
+			}
+			sb.append("private String ").append(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, property)).append(";").append(StrUtil.LF).append("\n");
+		}
+		return sb.toString();
 	}
 
 }
