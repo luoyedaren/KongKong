@@ -64,7 +64,16 @@ public class TestExcelToJavaBean {
 			"LOAN_NO\t贷款账号\n" +
 			"PAY_TYPE\t支付方式\n" +
 			"PEDPAY_MERCHANT_NO\t收款商户编号\n" +
-			"MARKETER_NO\t营销人员工号\n";
+			"MARKETER_NO\t营销人员工号\n" +
+			"AUTH_FLG\t授权标识\n" +
+			"AUTH_CONTENT\t授权内容/用途\n" +
+			"\t企业主信息\n" +
+			"\t企业信息\n" +
+			"\t订单明细\n" +
+			"\t信用明细\n" +
+			"LOAN_APPL_TIME\t贷款申请时间\n" +
+			"IP\tIP地址\n" +
+			"MAC\t设备号\n";
 
 	/**
 	 * 字符转java 属性 驼峰
